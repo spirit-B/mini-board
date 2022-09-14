@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { v1 as uuid } from 'uuid';
 import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -24,7 +23,6 @@ export class BoardsService {
       title,
       description,
     });
-    console.log(board);
 
     await this.boardRepository.save(board);
     return board;

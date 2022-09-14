@@ -7,7 +7,10 @@ import {
   Patch,
   Post,
   ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
+import { title } from 'process';
 import { Board } from './board.entity';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -22,7 +25,7 @@ export class BoardsController {
     return this.boardsService.getAllBoard();
   }
 
-  @Post()
+  @Post('/')
   createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
     return this.boardsService.createBoard(createBoardDto);
   }
