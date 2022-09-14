@@ -1,11 +1,9 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateBoardDto {
+export class UpdateBoardDto {
   @IsNotEmpty()
   title: string;
 
   @IsNotEmpty()
   description: string;
-
-  createAt: Date;
 }

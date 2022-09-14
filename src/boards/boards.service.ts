@@ -4,6 +4,7 @@ import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { Board } from './board.entity';
+import { UpdateBoardDto } from './dto/update-board.dto';
 
 @Injectable()
 export class BoardsService {
@@ -11,22 +12,10 @@ export class BoardsService {
     @InjectRepository(BoardRepository)
     private boardRepository: BoardRepository,
   ) {}
-  // private boards: Board[] = [];
-  // getAllBoard(): Board[] {
-  //   return this.boards;
-  // }
-  // createBoard(createBoardDto: CreateBoardDto) {
-  //   const { title, description } = createBoardDto;
-  //   const board: Board = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     // nickname, // nickname과 time은 추후 로그인 및 게시글 작성 시 완료
-  //     // time,
-  //   };
-  //   this.boards.push(board);
-  //   return board;
-  // }
+
+  async getAllBoard(): Promise<Board[]> {
+    return this.boardRepository.find();
+  }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     const { title, description } = createBoardDto;
@@ -35,6 +24,7 @@ export class BoardsService {
       title,
       description,
     });
+    console.log(board);
 
     await this.boardRepository.save(board);
     return board;
@@ -49,21 +39,26 @@ export class BoardsService {
 
     return found;
   }
-  // getBoardById(id: string): Board {
-  //   const found = this.boards.find((board) => board.id === id);
-  //   if (!found) {
-  //     throw new NotFoundException(
-  //       '해당 아이디를 가진 게시물이 존재하지 않습니다.',
-  //     );
-  //   }
-  //   return found;
-  // }
-  // deleteBoard(id: string): void {
-  //   const found = this.getBoardById(id);
-  //   this.boards = this.boards.filter((board) => board.id !== found.id);
-  // }
-  // updateBoard(id: string): Board {
-  //   const board = this.getBoardById(id);
-  //   return board;
-  // }
+
+  async deleteBoard(id: number): Promise<void> {
+    const result = await this.boardRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Can't find Board with id ${id}`);
+    }
+  }
+
+  async updateBoard(
+    id: number,
+    updateBoardDto: UpdateBoardDto,
+  ): Promise<Board> {
+    const { title, description } = updateBoardDto;
+    const board = await this.getBoardById(id);
+
+    board.title = title;
+    board.description = description;
+    await this.boardRepository.save(board);
+
+    return board;
+  }
 }
