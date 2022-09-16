@@ -1,9 +1,9 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class UpdateBoardDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: '제목을 작성해주세요.' })
   title: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: '게시글을 작성해주세요.' })
   description: string;
 }
