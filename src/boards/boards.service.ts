@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { Board } from './board.entity';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { User } from 'src/auth/user.entity';
+import { GetUser } from 'src/auth/get-user.decorator';
 
 @Injectable()
 export class BoardsService {
@@ -46,13 +47,15 @@ export class BoardsService {
 		}
 	}
 
-	async updateBoard(id: number, updateBoardDto: UpdateBoardDto): Promise<Board> {
+	async updateBoard(id: number, updateBoardDto: UpdateBoardDto, user: User): Promise<Board> {
 		const { title, description } = updateBoardDto;
 		const board = await this.getBoardById(id);
 
 		board.title = title;
 		board.description = description;
-		await this.boardRepository.save(board);
+		console.log(board);
+		if (board.user.id === user.id) await this.boardRepository.update({ id, user }, board);
+		else throw new UnauthorizedException('수정할 수 있는 권한이 없습니다.');
 
 		return board;
 	}

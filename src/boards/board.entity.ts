@@ -19,6 +19,9 @@ export class Board extends BaseEntity {
 	@Column()
 	description: string;
 
+	@Column()
+	username: string;
+
 	@CreateDateColumn()
 	createdAt: Date;
 

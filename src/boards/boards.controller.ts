@@ -43,7 +43,11 @@ export class BoardsController {
 	}
 
 	@Patch('/:id')
-	updateBoard(@Param('id', ParseIntPipe) id: number, @Body() updateBoardDto: UpdateBoardDto) {
-		return this.boardsService.updateBoard(id, updateBoardDto);
+	updateBoard(
+		@Param('id', ParseIntPipe) id: number,
+		@Body() updateBoardDto: UpdateBoardDto,
+		@GetUser() user: User
+	) {
+		return this.boardsService.updateBoard(id, updateBoardDto, user);
 	}
 }
