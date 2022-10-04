@@ -7,7 +7,6 @@ export class CreateBoardDto {
 	@IsNotEmpty({ message: '게시글을 작성해주세요.' })
 	description: string;
 
-	@IsNotEmpty()
 	username: string;
 
 	createAt: Date;

@@ -8,6 +8,7 @@ import {
 	Post,
 	ParseIntPipe,
 	UseGuards,
+	Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
@@ -29,8 +30,14 @@ export class BoardsController {
 
 	@Post('/')
 	createBoard(@Body() createBoardDto: CreateBoardDto, @GetUser() user: User): Promise<Board> {
+		console.log(user);
 		return this.boardsService.createBoard(createBoardDto, user);
 	}
+
+	// @Post('/')
+	// createBoard(@Body() createBoardDto: CreateBoardDto, @Req() user: User): Promise<Board> {
+	// 	return this.boardsService.createBoard(createBoardDto, user);
+	// }
 
 	@Get('/:id')
 	getBoardById(@Param('id') id: number): Promise<Board> {
