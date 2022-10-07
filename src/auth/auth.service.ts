@@ -29,7 +29,7 @@ export class AuthService {
 
 			return { accessToken };
 		} else {
-			throw new UnauthorizedException('로그인 실패');
+			throw new UnauthorizedException('아이디나 비밀번호를 확인하세요.');
 		}
 	}
 }

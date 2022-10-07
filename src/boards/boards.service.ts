@@ -5,7 +5,6 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { Board } from './board.entity';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { User } from 'src/auth/user.entity';
-import { GetUser } from 'src/auth/get-user.decorator';
 
 @Injectable()
 export class BoardsService {
@@ -33,7 +32,7 @@ export class BoardsService {
 		const found = await this.boardRepository.findOneBy({ id });
 
 		if (!found) {
-			throw new NotFoundException(`Can't find Board with id ${id}`);
+			throw new NotFoundException(`해당 게시물이 존재하지 않습니다.`);
 		}
 
 		return found;
