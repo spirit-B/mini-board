@@ -1,7 +1,8 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
+import { SigninDto } from './dto/signin.dto';
+import { SignupDto } from './dto/signup.dto';
 import { GetUser } from './get-user.decorator';
 import { User } from './user.entity';
 
@@ -10,20 +11,21 @@ export class AuthController {
 	constructor(private authService: AuthService) {}
 
 	@Post('/signup')
-	signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
-		return this.authService.signUp(authCredentialsDto);
+	signUp(@Body() signupDto: SignupDto): Promise<void> {
+		return this.authService.signUp(signupDto);
 	}
 
 	@Post('/signin')
-	signIn(@Body() authCredntialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
-		return this.authService.signIn(authCredntialsDto);
+	signIn(@Body() signinDto: SigninDto): Promise<{ accessToken: string }> {
+		return this.authService.signIn(signinDto);
 	}
 
 	@Post('/test')
 	@UseGuards(AuthGuard())
 	test(@GetUser() user: User) {
-		console.log('user', user.username);
-		console.log('userId', user.id);
-		return user.username;
+		console.log('UID', user.UID);
+		console.log('Id', user.id);
+		console.log('nickname', user.nickname);
+		return user.nickname;
 	}
 }

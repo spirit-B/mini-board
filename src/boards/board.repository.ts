@@ -8,9 +8,9 @@ import { User } from 'src/auth/user.entity';
 export class BoardRepository extends Repository<Board> {
 	async createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
 		const { title, description } = createBoardDto;
-		const username = user.username;
-		console.log(username);
-		const board = this.create({ title, description, username, user });
+		const nickname = user.nickname;
+
+		const board = this.create({ title, description, nickname, user });
 
 		await board.save();
 		return board;

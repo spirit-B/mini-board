@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { User } from 'src/auth/user.entity';
 import {
 	CreateDateColumn,
@@ -14,13 +15,15 @@ export class Board extends BaseEntity {
 	id: number;
 
 	@Column()
+	@IsNotEmpty({ message: '제목을 작성해주세요.' })
 	title: string;
 
 	@Column()
+	@IsNotEmpty({ message: '게시글을 작성해주세요.' })
 	description: string;
 
 	@Column()
-	username: string;
+	nickname: string;
 
 	@CreateDateColumn()
 	createdAt: Date;

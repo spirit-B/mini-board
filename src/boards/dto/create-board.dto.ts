@@ -1,13 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { PickType } from '@nestjs/mapped-types';
+import { Board } from '../board.entity';
 
-export class CreateBoardDto {
-	@IsNotEmpty({ message: '제목을 작성해주세요.' })
-	title: string;
-
-	@IsNotEmpty({ message: '게시글을 작성해주세요.' })
-	description: string;
-
-	username: string;
-
-	createAt: Date;
-}
+export class CreateBoardDto extends PickType(Board, ['title', 'description'] as const) {}

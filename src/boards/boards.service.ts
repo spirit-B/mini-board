@@ -17,7 +17,7 @@ export class BoardsService {
 	async getAllBoard(user: User): Promise<Board[]> {
 		const query = this.boardRepository.createQueryBuilder('board');
 
-		query.where('board.userId = :userId', { userId: user.id });
+		// query.where('board.userId = :userId', { userId: user.id });
 
 		const boards = await query.getMany();
 
@@ -43,7 +43,7 @@ export class BoardsService {
 		const result = await this.boardRepository.delete({ id, user });
 
 		if (result.affected === 0) {
-			throw new NotFoundException(`Can't find Board with id ${id}`);
+			throw new NotFoundException(`해당 게시물을 찾을 수 없습니다.`);
 		}
 	}
 
@@ -53,8 +53,9 @@ export class BoardsService {
 
 		board.title = title;
 		board.description = description;
-		console.log(board);
-		if (board.user.id === user.id) await this.boardRepository.update({ id, user }, board);
+
+		if (board.nickname === user.nickname)
+			await this.boardRepository.update({ id, user }, board);
 		else throw new UnauthorizedException('수정할 수 있는 권한이 없습니다.');
 
 		return board;
